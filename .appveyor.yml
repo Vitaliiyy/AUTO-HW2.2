@@ -1,37 +1,17 @@
-    HELP.md
-        .gradle
-        build/
+image: Ubuntu  # образ для сборки
 
-      ### STS ###
-        .apt_generated
-        .classpath
-        .factorypath
-        .project
-        .settings
-        .springBeans
-        .sts4-cache
+stack: jdk 11  # версия JDK
 
-      ### IntelliJ IDEA ###
-        .idea
-      *.iws
-      *.iml
-      *.ipr
-        out/
+branches:
+  only:
+    - main  # ветка git
 
-      ### NetBeans ###
-        /nbproject/private/
-        /nbbuild/
-        /dist/
-        /nbdist/
-        /.nb-gradle/
+build: off  # будем использовать свой скрипт сборки
 
-      ### VS Code ###
-        .vscode/
+install:
+  # запускаем SUT (& означает, что в фоновом режиме не блокируем терминал для запуска тестов)
+  - java -jar ./artifacts/app-mbank.jar &
+  - chmod +x gradlew
 
-      ### Package Files ###
-
-
-      ### Exclusions ###
-      !gradle/wrapper/gradle-wrapper.jar
-      !**/src/main/**
-      !**/src/test/**
+build_script:
+  - ./gradlew test --info  # запускаем тест, флаг --info позволяет выводить больше информации
